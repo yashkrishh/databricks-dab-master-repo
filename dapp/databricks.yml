@@ -4,7 +4,8 @@ bundle:
   uuid: 2fb134f3-f8ce-4bf4-b969-d03820bf7fa3
 
 include:
-  - resources/*.yml
+  - "jobs/*.job.yml"
+  - "clusters/*.yml"
 
 # Variable declarations. Kept safely intact!
 variables:

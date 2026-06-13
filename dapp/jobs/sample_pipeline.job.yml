@@ -1,0 +1,21 @@
+resources:
+  jobs:
+    sample_pipeline_job:
+      name: "[${bundle.target}] Modular Pipeline Job"
+      job_clusters:
+        - job_cluster_key: bronze_cluster
+          new_cluster: ${var.low_cost_compute}   # 🔌 Injects the entire lightweight object map!
+        - job_cluster_key: gold_cluster
+          new_cluster: ${var.high_perf_compute}  # 🔌 Injects the entire heavy-duty object map!
+      tasks:
+        - task_key: run_bronze_ingest
+          job_cluster_key: bronze_cluster
+          notebook_task:
+            notebook_path: ../src/sample_notebook.ipynb
+
+        - task_key: run_gold_aggregation
+          job_cluster_key: gold_cluster
+          depends_on:
+            - task_key: run_bronze_ingest
+          notebook_task:
+            notebook_path: ../src/sample_notebook.ipynb

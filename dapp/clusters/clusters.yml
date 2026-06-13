@@ -1,0 +1,16 @@
+variables:
+  low_cost_compute:
+    description: "Single-node lightweight cluster architecture for standard tasks"
+    type: complex
+    default:
+      spark_version: 14.3.x-scala2.12
+      node_type_id: Standard_DS3_v2
+      num_workers: 1
+
+  high_perf_compute:
+    description: "Multi-worker heavy-duty machine pool layout for analytics"
+    type: complex
+    default:
+      spark_version: 14.3.x-scala2.12
+      node_type_id: Standard_DS4_v2
+      num_workers: 3
