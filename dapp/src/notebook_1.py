@@ -9,3 +9,6 @@ updated_output = f"{base_input}-test"
 # 3. Drop the package off at the Databricks Post Office!
 dbutils.jobs.taskValues.set(key="from_t1", value=updated_output)
 print(f"Task 1 successfully exported task value 'from_t1': {updated_output}")
+
+
+print("Verifying Automated Pipeline Integration - Hello From GitHub Actions!")
