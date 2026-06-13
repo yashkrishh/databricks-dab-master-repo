@@ -15,6 +15,9 @@ variables:
   environment_tier:
     description: "The operational classification tier of this deployment cluster"
     default: "DEVELOPMENT_SANDBOX"
+  target_cluster_id:
+    description: "The active compute node pool target for execution"
+    default: "DEFAULT_SERVERLESS" # Baseline fallback
 
 targets:
   dev:
