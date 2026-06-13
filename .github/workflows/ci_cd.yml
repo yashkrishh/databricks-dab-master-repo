@@ -4,12 +4,14 @@ concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
   cancel-in-progress: true
 
+# 🔌 Re-engineered Trigger: Fire ONLY when someone opens a Pull Request to merge into these branches
 on:
-  push:
+  pull_request:
     branches:
       - main
       - init
-      - job-parameters  # Triggers the automation when pushing to your current feature branch
+      - job-parameters
+      - feature/actions-verify
 
 jobs:
   # STAGE 1: Infrastructure Deployment
