@@ -1,0 +1,30 @@
+resources:
+  jobs:
+    cross_task_sharing_job:
+      name: "[${bundle.target}] Cross Task Sharing Job"
+      tasks:
+        # 🧪 Upstream Task (The Producer)
+        - task_key: t1
+          # new_cluster:
+          #   spark_version: 14.3.x-scala2.12
+          #   node_type_id: Standard_DS3_v2
+          #   num_workers: 1
+          notebook_task:
+            notebook_path: ../src/notebook_1.py
+            base_parameters:
+              t1_param: "param-1"
+
+        # 🧪 Downstream Task (The Consumer)
+        - task_key: t2
+          depends_on:
+            - task_key: t1  # ⚠️ CRUCIAL: Tells t2 to wait until t1 writes the value!
+          # new_cluster:
+          #   spark_version: 14.3.x-scala2.12
+          #   node_type_id: Standard_DS3_v2
+          #   num_workers: 1
+          notebook_task:
+            notebook_path: ../src/notebook_2.py
+            # 🔌 INTERCEPTION: Snatch the live variable from t1 on the fly!
+            # 🛡️ FIX: Swapped ${} out for {{}} to tell the compiler to resolve this at runtime!
+            base_parameters:
+              from_t1_resolved: "{{tasks.t1.values.from_t1}}"

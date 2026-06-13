@@ -4,14 +4,19 @@ resources:
       name: "[${bundle.target}] Modular Pipeline Job"
       job_clusters:
         - job_cluster_key: bronze_cluster
-          new_cluster: ${var.low_cost_compute}   # 🔌 Injects the entire lightweight object map!
+          new_cluster: ${var.low_cost_compute}
         - job_cluster_key: gold_cluster
-          new_cluster: ${var.high_perf_compute}  # 🔌 Injects the entire heavy-duty object map!
+          new_cluster: ${var.high_perf_compute}
       tasks:
         - task_key: run_bronze_ingest
           job_cluster_key: bronze_cluster
           notebook_task:
             notebook_path: ../src/sample_notebook.ipynb
+            # 🔌 INJECTION STEP: Defining task-level runtime parameters
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+              notebook_param: "50.0"
 
         - task_key: run_gold_aggregation
           job_cluster_key: gold_cluster
@@ -20,8 +25,12 @@ resources:
           notebook_task:
             notebook_path: ../src/sample_notebook.ipynb
 
-        # 🚀 New Task 2: Instant-start task using the Retrieval Lookup Hook
         - task_key: run_instant_developer_test
-          existing_cluster_id: ${var.existing_workspace_cluster} # Injects the live cloud ID string!
+          existing_cluster_id: ${var.existing_workspace_cluster}
           notebook_task:
             notebook_path: ../src/sample_notebook.ipynb
+            # 🔌 FIX: Forward the missing widget key!
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+              notebook_param: "2" # Add this line!

@@ -27,7 +27,7 @@ targets:
     workspace:
       host: https://adb-7405608553806739.19.azuredatabricks.net
       # 🛡️ FIXED: root_path is now correctly indented under the workspace block
-      root_path: /Workspace/Users/yashkrishh1991@gmail.com/.bundle/${bundle.name}/${target.name}
+      root_path: /Workspace/Users/yashkrishh1991@gmail.com/.bundle/${bundle.name}/dev
     variables:
       catalog: dbx_workspace_dev
       schema: ${workspace.current_user.short_name}
@@ -36,7 +36,7 @@ targets:
     mode: production
     workspace:
       host: https://adb-prod-workspace-production-url.net
-      root_path: /Shared/deployments/production_pipelines/${bundle.name}/${target.name}
+      root_path: /Shared/deployments/production_pipelines/${bundle.name}/prod
     # 🛡️ OVERRIDE STEP: Injecting production custom variable states
     variables:
       catalog: dbx_workspace_dev
