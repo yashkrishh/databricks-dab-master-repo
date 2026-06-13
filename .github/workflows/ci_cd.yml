@@ -10,6 +10,7 @@ on:
       - main
       - init
       - job-parameters  # Triggers the automation when pushing to your current feature branch
+      - feature/actions-verify  # 👈 Add this line right here!
 
 jobs:
   # STAGE 1: Infrastructure Deployment
