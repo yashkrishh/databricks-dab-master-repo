@@ -1,0 +1,22 @@
+resources:
+  jobs:
+    job_1:
+      name: "[${bundle.target}] Job 1 (Master Orchestrator)"
+      tasks:
+        # Task A: The Ingestion Step
+        - task_key: job_1_task_1
+          notebook_task:
+            notebook_path: ../src/notebook_1.py
+            base_parameters:
+              t1_param: "param-1"
+
+        # Task B: The Cross-Job Trigger Bridge
+        - task_key: trigger_downstream_job
+          depends_on:
+            - task_key: job_1_task_1
+          run_job_task:
+            # 🔌 Look up the unique backend cloud ID of the second job asset automatically!
+            job_id: ${resources.jobs.job_2.id}
+            # Inject dynamic runtime data from Task 1 into Job 2's gate parameter
+            job_parameters:
+              param_from_job_1: "{{tasks.job_1_task_1.values.from_t1}}"

@@ -1,0 +1,16 @@
+resources:
+  jobs:
+    job_2:
+      name: "[${bundle.target}] Job 2 (Receiver Target)"
+      # 1. Register a Job-Level Parameter to act as a receiver gate
+      parameters:
+        - name: param_from_job_1
+          default: "fallback-value"
+      tasks:
+        - task_key: job_2_task_1
+          # 🚀 Running on serverless to keep things instant and cheap!
+          notebook_task:
+            notebook_path: ../src/notebook_2.py
+            base_parameters:
+              # We map the incoming job-level parameter straight down to the widget
+              from_t1_resolved: "{{job.parameters.param_from_job_1}}"
