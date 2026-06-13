@@ -1,0 +1,56 @@
+name: "Databricks Asset Bundle CD Pipeline"
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+      - init
+      - job-parameters  # Triggers the automation when pushing to your current feature branch
+
+jobs:
+  # STAGE 1: Infrastructure Deployment
+  deploy_bundle:
+    name: "Compile & Deploy Asset Bundle"
+    runs-on: ubuntu-latest
+    environment: dev
+    
+    steps:
+      - name: "Checkout Codefootprint Repository"
+        uses: actions/checkout@v4
+
+      - name: "Provision Databricks CLI Engine"
+        uses: databricks/setup-cli@v1
+
+      - name: "Execute Bundle Deployment"
+        run: |
+          databricks bundle deploy
+        env:
+          DATABRICKS_HOST: "https://adb-7405608553806739.19.azuredatabricks.net"
+          DATABRICKS_TOKEN: "${{ secrets.DATABRICKS_TOKEN }}"
+          DATABRICKS_BUNDLE_ENV: "dev"
+
+  # STAGE 2: Automated Validation Verification Run
+  run_pipeline_update:
+    name: "Trigger Verification Workflow Execution"
+    runs-on: ubuntu-latest
+    environment: dev
+    needs: deploy_bundle # Blocks Stage 2 from starting until Stage 1 completely succeeds!
+
+    steps:
+      - name: "Checkout Codefootprint Repository"
+        uses: actions/checkout@v4
+
+      - name: "Provision Databricks CLI Engine"
+        uses: databricks/setup-cli@v1
+
+      - name: "Trigger Active Verification Run"
+        run: |
+          databricks bundle run job_1
+        env:
+          DATABRICKS_HOST: "https://adb-7405608553806739.19.azuredatabricks.net"
+          DATABRICKS_TOKEN: "${{ secrets.DATABRICKS_TOKEN }}"
+          DATABRICKS_BUNDLE_ENV: "dev"
