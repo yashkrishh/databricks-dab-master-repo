@@ -22,8 +22,9 @@ jobs:
       - name: "Checkout Codefootprint Repository"
         uses: actions/checkout@v4
 
+      # 🛡️ FIX: Updated version tag to the verified semantic version release
       - name: "Provision Databricks CLI Engine"
-        uses: databricks/setup-cli@v1
+        uses: databricks/setup-cli@v0.2.1
 
       - name: "Execute Bundle Deployment"
         run: |
@@ -44,6 +45,7 @@ jobs:
       - name: "Checkout Codefootprint Repository"
         uses: actions/checkout@v4
 
+      # 🛡️ FIX: Updated version tag to the verified semantic version release
       - name: "Provision Databricks CLI Engine"
         uses: databricks/setup-cli@v0.2.1 
 
