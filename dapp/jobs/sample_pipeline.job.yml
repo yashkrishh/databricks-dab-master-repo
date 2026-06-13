@@ -19,3 +19,9 @@ resources:
             - task_key: run_bronze_ingest
           notebook_task:
             notebook_path: ../src/sample_notebook.ipynb
+
+        # 🚀 New Task 2: Instant-start task using the Retrieval Lookup Hook
+        - task_key: run_instant_developer_test
+          existing_cluster_id: ${var.existing_workspace_cluster} # Injects the live cloud ID string!
+          notebook_task:
+            notebook_path: ../src/sample_notebook.ipynb

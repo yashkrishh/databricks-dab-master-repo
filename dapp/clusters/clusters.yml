@@ -14,3 +14,10 @@ variables:
       spark_version: 14.3.x-scala2.12
       node_type_id: Standard_DS4_v2
       num_workers: 3
+
+      
+  # 🔍 RETRIEVAL STEP: Automated cloud query definition
+  existing_workspace_cluster:
+    description: "Queries the active workspace to pull down the shared cluster ID"
+    lookup:
+      cluster: "shared_cluster"
