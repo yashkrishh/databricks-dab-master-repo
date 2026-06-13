@@ -12,6 +12,9 @@ variables:
     description: The catalog to use
   schema:
     description: The schema to use
+  environment_tier:
+    description: "The operational classification tier of this deployment cluster"
+    default: "DEVELOPMENT_SANDBOX"
 
 targets:
   dev:
@@ -29,11 +32,12 @@ targets:
     mode: production
     workspace:
       host: https://adb-prod-workspace-production-url.net
-      # 🛡️ FIXED: Indented correctly and changed legacy variable suffix to ${target.name}
       root_path: /Shared/deployments/production_pipelines/${bundle.name}/${target.name}
+    # 🛡️ OVERRIDE STEP: Injecting production custom variable states
     variables:
       catalog: dbx_workspace_dev
       schema: prod
+      environment_tier: "PRODUCTION_ENTERPRISE"
     permissions:
       - user_name: yashkrishh1991@gmail.com
         level: CAN_MANAGE
