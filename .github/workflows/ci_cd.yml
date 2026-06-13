@@ -22,11 +22,13 @@ jobs:
       - name: "Checkout Codefootprint Repository"
         uses: actions/checkout@v4
 
-      # 🛡️ FIX: Updated version tag to the verified semantic version release
+      # ⚙️ Fixed: Attached to the standard Databricks production channel tag
       - name: "Provision Databricks CLI Engine"
-        uses: databricks/setup-cli@v0.2.1
+        uses: databricks/setup-cli@main
 
+      # 📁 Fixed: Added working-directory modifier so the CLI knows your bundle is inside /dapp
       - name: "Execute Bundle Deployment"
+        working-directory: ./dapp
         run: |
           databricks bundle deploy
         env:
@@ -45,11 +47,13 @@ jobs:
       - name: "Checkout Codefootprint Repository"
         uses: actions/checkout@v4
 
-      # 🛡️ FIX: Updated version tag to the verified semantic version release
+      # ⚙️ Fixed: Attached to the standard Databricks production channel tag
       - name: "Provision Databricks CLI Engine"
-        uses: databricks/setup-cli@v0.2.1 
+        uses: databricks/setup-cli@main
 
+      # 📁 Fixed: Added working-directory modifier so the CLI knows your bundle is inside /dapp
       - name: "Trigger Active Verification Run"
+        working-directory: ./dapp
         run: |
           databricks bundle run job_1
         env:
