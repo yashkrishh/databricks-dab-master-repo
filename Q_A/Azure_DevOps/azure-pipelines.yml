@@ -32,7 +32,12 @@ steps:
   - script: |
       databricks bundle deploy -t dev
     workingDirectory: $(SourceDir)
-    displayName: 'DAB: Deploy to Dev Workspace'
+    displayName: 'DAB: Deploy via Service Principal'
     env:
       DATABRICKS_HOST: $(DATABRICKS_HOST)
-      DATABRICKS_TOKEN: $(DATABRICKS_TOKEN)
+      ARM_TENANT_ID: $(ARM_TENANT_ID)
+      ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+      ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+      DATABRICKS_WORKSPACE_RESOURCE_ID: $(DATABRICKS_WORKSPACE_RESOURCE_ID)
+
+      
