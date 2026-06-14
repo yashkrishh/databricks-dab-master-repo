@@ -1,0 +1,38 @@
+# Inside Q_A/Azure_DevOps/azure-pipelines.yml
+
+# 1. Disable automated branch triggers during initial provisioning configuration
+trigger: none
+
+# 2. Allocate the virtual execution host environment container
+pool:
+  vmImage: 'ubuntu-latest'
+
+# 3. Bind the Pipeline to the secure Azure DevOps Variable Vault
+variables:
+  - group: 'Databricks Settings' # Links all pipeline tasks to your variable group
+  - name: 'SourceDir'
+    value: 'Q_A/Azure_DevOps/azure_devops_demo'
+
+steps:
+  # STEP A: Unpack and Install the Databricks CLI Binary onto the Agent
+  - script: |
+      curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sudo sh
+    displayName: 'Databricks CLI: Install/Update'
+
+  # STEP B: Perform Syntax and Parameter Model Compilation Validations
+  - script: |
+      databricks bundle validate
+    workingDirectory: $(SourceDir)
+    displayName: 'DAB: Validate Code Schema'
+    env:
+      DATABRICKS_HOST: $(DATABRICKS_HOST)
+      DATABRICKS_TOKEN: $(DATABRICKS_TOKEN)
+
+  # STEP C: Compile and Push the Infrastructure Elements into the Cloud Workspace
+  - script: |
+      databricks bundle deploy -t dev
+    workingDirectory: $(SourceDir)
+    displayName: 'DAB: Deploy to Dev Workspace'
+    env:
+      DATABRICKS_HOST: $(DATABRICKS_HOST)
+      DATABRICKS_TOKEN: $(DATABRICKS_TOKEN)
